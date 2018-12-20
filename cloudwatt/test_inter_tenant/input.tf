@@ -39,8 +39,12 @@ variable "bastion_cidr_project_B" {
 }
 
 # Backend
-variable "backend_name" {
-  default = "backend_server"
+variable "backend_name_A" {
+  default = "backend_server_A"
+}
+
+variable "backend_name_B" {
+  default = "backend_server_B"
 }
 
 variable "backend_ansible_group_project_A" {
@@ -52,8 +56,12 @@ variable "backend_ansible_group_project_B" {
 }
 
 # Bastion
-variable "bastion_name" {
-  default = "bastion_server"
+variable "bastion_name_A" {
+  default = "bastion_server_A"
+}
+
+variable "bastion_name_B" {
+  default = "bastion_server_B"
 }
 
 variable "bastion_ansible_group" {
