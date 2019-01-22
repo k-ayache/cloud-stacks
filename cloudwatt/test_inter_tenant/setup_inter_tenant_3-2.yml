@@ -1,0 +1,50 @@
+- name: "Setup tools"
+  hosts: all
+  vars:
+    target_num1: 1
+    target_num2: 2
+  vars_files:
+    - ansible-vars.yml
+  tasks:
+    - shell: "terraform output -json | jq -r '.project_A.value'"
+      delegate_to: 127.0.0.1
+      register: project_A
+    - shell: "terraform output -json | jq -r '.project_B.value'"
+      delegate_to: 127.0.0.1
+      register: project_B
+    - shell: "terraform output -json | jq -r '.virtual_network_project_A.value'"
+      delegate_to: 127.0.0.1
+      register: virtual_network_project_A
+    - shell: "terraform output -json | jq -r '.virtual_network_project_B.value'"
+      delegate_to: 127.0.0.1
+      register: virtual_network_project_B
+    - debug:
+        var: item
+      with_items:
+        - "{{ project_A.stdout }}"
+        - "{{ project_B.stdout }}"
+        - "{{ virtual_network_project_A.stdout }}"
+        - "{{ virtual_network_project_B.stdout }}"
+
+    - shell: >
+        contrail-api-cli
+        --os-tenant-name {{ tenant_name }}
+        --os-username {{ user_name }}
+        --os-password {{ password }}
+        --host {{ server_ip }}
+        --os-auth-plugin {{ auth_plugin }}
+        --os-auth-url {{ auth_url }}
+        --ns contrail_api_cli.provision set-route-targets
+        --virtual-network-fqname default-domain:{{ item.tenant_name }}:{{ item.network }}
+        --import-route-target-list {{ item.import_route_target }}
+        --export-route-target-list {{ item.export_route_target }}
+      with_items:
+        - tenant_name: "{{ project_A.stdout }}"
+          network: "{{ virtual_network_project_A.stdout }}"
+          import_route_target: "target:{{ asn }}:{{ target_num2 }}"
+          export_route_target: "target:{{ asn }}:{{ target_num1 }}"
+        - tenant_name: "{{ project_B.stdout }}"
+          network: "{{ virtual_network_project_B.stdout }}"
+          import_route_target: "target:{{ asn }}:{{ target_num1 }}"
+          export_route_target: "target:{{ asn }}:{{ target_num2 }}"
+      become: true
