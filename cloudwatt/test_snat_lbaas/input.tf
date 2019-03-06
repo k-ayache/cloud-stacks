@@ -6,11 +6,11 @@ variable "key_pair" {}
 
 # Backend
 variable "backend_name" {
-  default = "backend_server"
+  default = "backend_server_snat"
 }
 
 variable "backend_ansible_group" {
-  default = "backend"
+  default = "backend_snat"
 }
 
 variable "nb_backend" {
@@ -19,24 +19,24 @@ variable "nb_backend" {
 
 # Bastion
 variable "bastion_name" {
-  default = "bastion_server"
+  default = "bastion_server_snat"
 }
 
 variable "bastion_ansible_group" {
-  default = "bastion"
+  default = "bastion_snat"
 }
 
 # Security Group
 variable "security_group_ssh_icmp_name" {
-  default = "security_group_ssh_icmp"
+  default = "security_group_ssh_icmp_snat"
 }
 
 variable "security_group_http_name" {
-  default = "security_group_http"
+  default = "security_group_http_snat"
 }
 
 variable "security_group_tcp_test_name" {
-  default = "security_group_tcp_test"
+  default = "security_group_tcp_test_snat"
 }
 
 # Network
@@ -45,32 +45,32 @@ variable "external_net" {
 }
 
 variable "backend_net" {
-  default = "backend_net"
+  default = "backend_net_snat"
 }
 
 variable "backend_cidr" {
-  default = "192.168.10.0/24"
+  default = "192.168.60.0/24"
 }
 
 variable "bastion_net" {
-  default = "bastion_net"
+  default = "bastion_net_snat"
 }
 
 variable "bastion_cidr" {
-  default = "192.168.1.0/24"
+  default = "192.168.7.0/24"
 }
 
 variable "vip_net" {
-  default = "backend_vip_net"
+  default = "backend_vip_net_snat"
 }
 
 variable "vip_cidr" {
-  default = "192.168.20.0/24"
+  default = "192.168.80.0/24"
 }
 
 # Router
 variable "gateway_name" {
-  default = "gateway"
+  default = "gateway_snat"
 }
 
 # LBaaS
@@ -91,9 +91,9 @@ variable "lb_provider" {
 }
 
 variable "lb_pool_name" {
-  default = "backend_pool"
+  default = "backend_pool_snat"
 }
 
 variable "lb_vip_name" {
-  default = "backend_vip"
+  default = "backend_vip_snat"
 }
